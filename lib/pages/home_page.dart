@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:imc_nutrition/widgets/input_height.dart';
+import 'package:imc_nutrition/widgets/input_height_widget.dart';
+
+import '../widgets/state_switch_widget.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -14,6 +16,7 @@ class HomePage extends StatelessWidget {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Calculadora de IMC',
@@ -22,19 +25,22 @@ class HomePage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            SizedBox(
+              height: 20,
+            ),
             Row(
               children: [
-                InputHeight(
-                  label: 'Height',
-                ),
+                InputHeightWidget(),
                 SizedBox(
-                  width: 20,
+                  width: 30,
                 ),
-                InputHeight(
-                  label: 'Weight',
-                ),
+                InputHeightWidget(),
               ],
             ),
+            SizedBox(
+              height: 20,
+            ),
+            SwitchWidget(),
           ],
         ),
       ),
