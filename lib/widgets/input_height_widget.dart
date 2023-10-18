@@ -10,7 +10,7 @@ class InputHeightWidget extends StatelessWidget {
       mask: '###.##',
     );
     return SizedBox(
-      height: 50,
+      height: 60,
       width: 170,
       child: TextFormField(
         inputFormatters: [maskFormatter],

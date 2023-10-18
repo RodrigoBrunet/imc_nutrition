@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
-class InputWeightWidget extends StatelessWidget {
-  const InputWeightWidget({
-    super.key,
-  });
+class InputAgeWidget extends StatelessWidget {
+  const InputAgeWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,14 +9,14 @@ class InputWeightWidget extends StatelessWidget {
       height: 60,
       width: 170,
       child: TextFormField(
-        maxLength: 6,
+        maxLength: 2,
         keyboardType: TextInputType.number,
         textAlign: TextAlign.center,
         decoration: InputDecoration(
           counterText: '',
           contentPadding: const EdgeInsets.only(bottom: 1),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(40)),
-          hintText: 'Weight',
+          hintText: 'Age',
         ),
       ),
     );
