@@ -13,7 +13,7 @@ dependencies:
   mask_text_input_formatter: ^2.5.0  
   syncfusion_flutter_gauges: ^23.1.41
   cupertino_icons: ^1.0.2
-  intl: ^0.18.1
+  brasil_fields: ^1.14.0
 
 dev_dependencies:
   flutter_test:
