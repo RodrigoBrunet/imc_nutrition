@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 class HomeController extends ChangeNotifier {
   var imc = 0.0;
 
-  void calcImc({required double peso, required double altura}) {
+  Future<void> calcImc({required double peso, required double altura}) async {
+    imc = 0;
+    notifyListeners();
+    await Future.delayed(const Duration(seconds: 1));
+
     imc = peso / (altura * altura);
     notifyListeners();
   }
