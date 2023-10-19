@@ -1,25 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class InputHeightWidget extends StatelessWidget {
-  const InputHeightWidget({super.key});
+  final TextEditingController controller;
+  final String? Function(String?) validador;
+
+  const InputHeightWidget({
+    super.key,
+    required this.controller,
+    required this.validador,
+  });
 
   @override
   Widget build(BuildContext context) {
-    var maskFormatter = MaskTextInputFormatter(
-      mask: '###.##',
-    );
     return SizedBox(
       height: 60,
       width: 170,
       child: TextFormField(
-        inputFormatters: [maskFormatter],
+        style: const TextStyle(
+          fontWeight: FontWeight.w900,
+          fontSize: 24,
+        ),
+        maxLength: 4,
+        controller: controller,
+        validator: validador,
         keyboardType: TextInputType.number,
         textAlign: TextAlign.center,
         decoration: InputDecoration(
-            contentPadding: const EdgeInsets.only(bottom: 1),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(40)),
-            hintText: 'Height'),
+          counterText: '',
+          contentPadding: const EdgeInsets.only(bottom: 1),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(40),
+              borderSide: const BorderSide(
+                color: Colors.white,
+              )),
+          hintText: 'Height',
+        ),
       ),
     );
   }
