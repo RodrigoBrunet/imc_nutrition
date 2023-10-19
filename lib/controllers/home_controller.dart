@@ -1,15 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class HomeController extends ChangeNotifier {
   var imc = 0.0;
-
-  var maskFormatterHeigth = MaskTextInputFormatter(
-    mask: '#.##',
-  );
-
-  var maskFormatterWeigth =
-      MaskTextInputFormatter(filter: {"#": RegExp(r'[0-9]')});
 
   void calcImc({required double peso, required double altura}) {
     imc = peso / (altura * altura);
