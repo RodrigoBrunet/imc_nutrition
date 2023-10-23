@@ -14,6 +14,7 @@ dependencies:
   syncfusion_flutter_gauges: ^23.1.41
   cupertino_icons: ^1.0.2
   brasil_fields: ^1.14.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

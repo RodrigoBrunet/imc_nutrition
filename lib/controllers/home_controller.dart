@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class HomeController extends ChangeNotifier {
   var imc = 0.0;
+  var idealWeightMan = 0.0;
+  double? pesoDouble;
+  double? alturaDouble;
+
+  var formatter =
+      NumberFormat.simpleCurrency(locale: 'pt_BR', decimalDigits: 2);
 
   Future<void> calcImc({required double peso, required double altura}) async {
     imc = 0;
@@ -12,9 +19,21 @@ class HomeController extends ChangeNotifier {
     notifyListeners();
   }
 
+  returnTextWeightFeedBack({required String altura, required String peso}) {
+    if (altura.isNotEmpty && peso.isNotEmpty) {
+      pesoDouble = formatter.parse(peso) as double;
+      alturaDouble = formatter.parse(altura) as double;
+      idealWeightMan =
+          (pesoDouble!.roundToDouble()) - ((alturaDouble! - 1.00) * 0.9) * 100;
+      return idealWeightMan.roundToDouble();
+    }
+
+    notifyListeners();
+  }
+
   returnColor() {
     switch (imc) {
-      case >= 12.5 && <= 18.5:
+      case < 16.5 && <= 18.5:
         return Colors.blue;
       case > 18.5 && <= 24.5:
         return Colors.green;
@@ -29,17 +48,21 @@ class HomeController extends ChangeNotifier {
   }
 
   returnText() {
-    switch (imc) {
-      case >= 12.5 && <= 18.5:
+    switch (imc.roundToDouble()) {
+      case <= 16.0 && <= 16.9:
+        return 'Muito abaixo do peso';
+      case > 16.9 && <= 18.4:
         return 'Abaixo do peso';
-      case > 18.5 && <= 24.5:
-        return 'Peso normal';
-      case > 24.5 && <= 30.5:
+      case > 18.4 && <= 24.9:
+        return 'Peso Normal';
+      case > 24.9 && <= 29.9:
         return 'Sobrepeso';
-      case > 30.5 && <= 39.5:
-        return 'Obesidade';
-      case > 39.5:
-        return 'Obesidade grave';
+      case > 29.9 && <= 34.9:
+        return 'Obesidade grau (I)';
+      case > 34.9 && <= 39.9:
+        return 'Obesidade grau (II)';
+      case > 39.9:
+        return 'Obesidade grau (III)';
     }
     notifyListeners();
   }

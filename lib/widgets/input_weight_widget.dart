@@ -5,10 +5,13 @@ class InputWeightWidget extends StatelessWidget {
   final TextEditingController controller;
   final String? Function(String?) validador;
   final List<TextInputFormatter>? inputFormatter;
+  final String labelText;
+
   const InputWeightWidget({
     super.key,
     required this.controller,
     required this.validador,
+    required this.labelText,
     this.inputFormatter,
   });
 
@@ -28,11 +31,12 @@ class InputWeightWidget extends StatelessWidget {
         keyboardType: TextInputType.number,
         textAlign: TextAlign.center,
         decoration: InputDecoration(
+          label: Container(
+              padding: const EdgeInsets.only(left: 10), child: Text(labelText)),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-          counterText: '',
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(15),
           ),
         ),
       ),

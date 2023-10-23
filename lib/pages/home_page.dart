@@ -24,6 +24,7 @@ class _HomePageState extends State<HomePage> {
     return AnimatedBuilder(
       animation: homeController,
       builder: (_, __) => Scaffold(
+        backgroundColor: Colors.white.withOpacity(0.8),
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -32,7 +33,7 @@ class _HomePageState extends State<HomePage> {
               Container(
                 color: homeController.returnColor(),
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
                 child: Form(
                   key: formKey,
                   child: Column(
@@ -52,8 +53,10 @@ class _HomePageState extends State<HomePage> {
                         height: 20,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           InputHeightWidget(
+                            labelText: 'Height',
                             controller: heightEc,
                             inputFormatter: [
                               FilteringTextInputFormatter.digitsOnly,
@@ -66,10 +69,8 @@ class _HomePageState extends State<HomePage> {
                               return null;
                             },
                           ),
-                          const SizedBox(
-                            width: 30,
-                          ),
                           InputWeightWidget(
+                            labelText: 'Weight',
                             inputFormatter: [
                               FilteringTextInputFormatter.digitsOnly,
                               PesoInputFormatter()
@@ -84,49 +85,40 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
+                      Center(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(400, 50),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                          onPressed: () {
+                            var formValid =
+                                formKey.currentState?.validate() ?? false;
+
+                            if (formValid) {
+                              double peso = double.parse(
+                                  weightEc.text.replaceAll(',', '.'));
+                              double altura = double.parse(
+                                  heightEc.text.replaceAll(',', '.'));
+                              homeController.calcImc(
+                                  peso: peso, altura: altura);
+                            }
+                          },
+                          child: const Text('Calcular IMC'),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 52),
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(30))),
-                child: Column(
-                  children: [
-                    GaugeWidget(imc: homeController.imc),
-                    Center(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            minimumSize: const Size(300, 50),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                        onPressed: () {
-                          var formValid =
-                              formKey.currentState?.validate() ?? false;
-
-                          if (formValid) {
-                            double peso = double.parse(
-                                weightEc.text.replaceAll(',', '.'));
-                            double altura = double.parse(
-                                heightEc.text.replaceAll(',', '.'));
-                            homeController.calcImc(peso: peso, altura: altura);
-                          }
-                        },
-                        child: const Text('Calcular IMC'),
-                      ),
-                    ),
-                  ],
-                ),
+              const SizedBox(
+                height: 8,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Divider(
-                        color: homeController.returnColor() ?? Colors.black),
                     Text(
                       homeController.returnText() ?? '',
                       style: const TextStyle(
@@ -135,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     Text(
-                      'imc: ${homeController.imc.toStringAsFixed(1)}',
+                      homeController.imc.toStringAsFixed(1),
                       style: const TextStyle(
                         fontSize: 36,
                         fontWeight: FontWeight.w900,
@@ -145,6 +137,21 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Text(
+                  homeController
+                      .returnTextWeightFeedBack(
+                          altura: heightEc.text, peso: weightEc.text)
+                      .toString(),
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: homeController.returnColor(),
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ),
+              GaugeWidget(imc: homeController.imc),
             ],
           ),
         ),
