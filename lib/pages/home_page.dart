@@ -141,9 +141,10 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Text(
                   homeController
-                      .returnTextWeightFeedBack(
-                          altura: heightEc.text, peso: weightEc.text)
-                      .toString(),
+                          .returnTextWeightFeedBack(
+                              altura: heightEc.text, peso: weightEc.text)
+                          ?.toString() ??
+                      '',
                   style: TextStyle(
                     fontSize: 24,
                     color: homeController.returnColor(),

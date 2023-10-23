@@ -25,6 +25,13 @@ class HomeController extends ChangeNotifier {
       alturaDouble = formatter.parse(altura) as double;
       idealWeightMan =
           (pesoDouble!.roundToDouble()) - ((alturaDouble! - 1.00) * 0.9) * 100;
+      if (idealWeightMan > 0 && imc > 18.4 && imc <= 24.9) {
+        return 'Ótimo!';
+      } else if (idealWeightMan > 0) {
+        return '+${idealWeightMan.roundToDouble()} kg!';
+      } else if (idealWeightMan < 0) {
+        return '-${idealWeightMan.roundToDouble()} kg!';
+      }
       return idealWeightMan.roundToDouble();
     }
 
@@ -44,6 +51,7 @@ class HomeController extends ChangeNotifier {
       case > 39.5:
         return Colors.red.shade900;
     }
+
     notifyListeners();
   }
 
