@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:imc_nutrition/controllers/home_controller.dart';
 import 'package:imc_nutrition/widgets/gauge_widget.dart';
-import 'package:imc_nutrition/widgets/input_height_widget.dart';
-import 'package:imc_nutrition/widgets/input_weight_widget.dart';
+import 'package:imc_nutrition/widgets/input_data_widget.dart';
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:imc_nutrition/widgets/list_text_imc_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,6 +16,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final weightEc = TextEditingController();
   final heightEc = TextEditingController();
+  final genderEc = TextEditingController();
+  final ageEc = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final homeController = HomeController();
 
@@ -37,6 +39,8 @@ class _HomePageState extends State<HomePage> {
                 child: Form(
                   key: formKey,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(
                         height: 24,
@@ -50,12 +54,12 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          InputHeightWidget(
+                          InputDataWidget(
                             labelText: 'Height',
                             controller: heightEc,
                             inputFormatter: [
@@ -69,7 +73,7 @@ class _HomePageState extends State<HomePage> {
                               return null;
                             },
                           ),
-                          InputWeightWidget(
+                          InputDataWidget(
                             labelText: 'Weight',
                             inputFormatter: [
                               FilteringTextInputFormatter.digitsOnly,
@@ -84,6 +88,38 @@ class _HomePageState extends State<HomePage> {
                             },
                           ),
                         ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 170,
+                            child: DropdownButtonFormField(
+                              items: dropDownTipicalIndicesItems,
+                              onChanged: (_) {},
+                              validator: (double? value) {
+                                if (value == null || value < 0) {
+                                  return 'Gender is required';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          InputDataWidget(
+                            maxLenght: 2,
+                            controller: ageEc,
+                            validador: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Age is required';
+                              }
+                              return null;
+                            },
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
                       ),
                       Center(
                         child: ElevatedButton(
@@ -111,53 +147,31 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 8,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      homeController.returnText() ?? '',
-                      style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    Text(
-                      homeController.imc.toStringAsFixed(1),
-                      style: const TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+              GaugeWidget(imc: homeController.imc),
+              Center(
                 child: Text(
-                  homeController
-                          .returnTextWeightFeedBack(
-                              altura: heightEc.text, peso: weightEc.text)
-                          ?.toString() ??
-                      '',
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: homeController.returnColor(),
+                  'IMC = ${homeController.imc.toStringAsFixed(1)}',
+                  style: const TextStyle(
+                    fontSize: 16,
                     fontWeight: FontWeight.w900,
+                    letterSpacing: 1,
                   ),
                 ),
               ),
-              GaugeWidget(imc: homeController.imc),
+              const ListTextImcWidget(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  List<DropdownMenuItem<double>> get dropDownTipicalIndicesItems {
+    List<DropdownMenuItem<double>> itens = [
+      const DropdownMenuItem(value: 1, child: Text("Male")),
+      const DropdownMenuItem(value: 2, child: Text("Female")),
+    ];
+    return itens;
   }
 
   @override
