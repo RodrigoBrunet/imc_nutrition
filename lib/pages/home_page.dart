@@ -6,6 +6,8 @@ import 'package:imc_nutrition/widgets/input_data_widget.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:imc_nutrition/widgets/list_text_imc_widget.dart';
 
+import '../utils/contants_style.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -26,14 +28,12 @@ class _HomePageState extends State<HomePage> {
     return AnimatedBuilder(
       animation: homeController,
       builder: (_, __) => Scaffold(
-        backgroundColor: Colors.white.withOpacity(0.8),
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                color: homeController.returnColor(),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
                 child: Form(
@@ -45,12 +45,10 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(
                         height: 24,
                       ),
-                      const Text(
-                        'Calculadora de IMC',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                      const Center(
+                        child: Text(
+                          'Calculadora de IMC',
+                          style: title,
                         ),
                       ),
                       const SizedBox(
@@ -60,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           InputDataWidget(
-                            labelText: 'Height',
+                            labelText: 'Altura',
                             controller: heightEc,
                             inputFormatter: [
                               FilteringTextInputFormatter.digitsOnly,
@@ -68,13 +66,13 @@ class _HomePageState extends State<HomePage> {
                             ],
                             validador: (String? value) {
                               if (value == null || value.isEmpty) {
-                                return 'Height is required';
+                                return 'Altura é obrigatório';
                               }
                               return null;
                             },
                           ),
                           InputDataWidget(
-                            labelText: 'Weight',
+                            labelText: 'Peso',
                             inputFormatter: [
                               FilteringTextInputFormatter.digitsOnly,
                               PesoInputFormatter()
@@ -82,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                             controller: weightEc,
                             validador: (String? value) {
                               if (value == null || value.isEmpty) {
-                                return 'Weight is required';
+                                return 'Peso é obrigatório';
                               }
                               return null;
                             },
@@ -100,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                               onChanged: (_) {},
                               validator: (double? value) {
                                 if (value == null || value < 0) {
-                                  return 'Gender is required';
+                                  return 'Genêro é obrigatório';
                                 }
                                 return null;
                               },
@@ -111,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                             controller: ageEc,
                             validador: (String? value) {
                               if (value == null || value.isEmpty) {
-                                return 'Age is required';
+                                return 'Idade é obrigatório';
                               }
                               return null;
                             },
@@ -119,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                       const SizedBox(
-                        height: 10,
+                        height: 20,
                       ),
                       Center(
                         child: ElevatedButton(
@@ -140,25 +138,31 @@ class _HomePageState extends State<HomePage> {
                                   peso: peso, altura: altura);
                             }
                           },
-                          child: const Text('Calcular IMC'),
+                          child: const Text(
+                            'Calcular IMC',
+                            style: button,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-              GaugeWidget(imc: homeController.imc),
+              Container(
+                  color: Colors.white38,
+                  child: GaugeWidget(imc: homeController.imc)),
               Center(
                 child: Text(
                   'IMC = ${homeController.imc.toStringAsFixed(1)}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 1,
+                    color: homeController.returnColor(),
                   ),
                 ),
               ),
-              const ListTextImcWidget(),
+              ListTextImcWidget(imc: homeController.imc),
             ],
           ),
         ),
@@ -168,8 +172,8 @@ class _HomePageState extends State<HomePage> {
 
   List<DropdownMenuItem<double>> get dropDownTipicalIndicesItems {
     List<DropdownMenuItem<double>> itens = [
-      const DropdownMenuItem(value: 1, child: Text("Male")),
-      const DropdownMenuItem(value: 2, child: Text("Female")),
+      const DropdownMenuItem(value: 1, child: Text("Masculino")),
+      const DropdownMenuItem(value: 2, child: Text("Feminino")),
     ];
     return itens;
   }

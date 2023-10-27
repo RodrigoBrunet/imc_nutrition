@@ -40,13 +40,13 @@ class HomeController extends ChangeNotifier {
         return Colors.blue;
       case >= 16.5 && <= 18.5:
         return Colors.blue;
-      case > 18.5 && <= 24.5:
+      case > 18.5 && <= 24.9:
         return Colors.green;
-      case > 24.5 && <= 30.5:
+      case > 24.9 && <= 29.9:
         return Colors.yellow.shade400;
-      case > 30.5 && <= 39.5:
+      case > 29.9 && <= 34.9:
         return Colors.red.shade300;
-      case > 39.5:
+      case > 34.9:
         return Colors.red.shade900;
     }
 
